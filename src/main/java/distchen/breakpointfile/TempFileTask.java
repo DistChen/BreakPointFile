@@ -22,7 +22,7 @@ public class TempFileTask extends Thread{
 
     @Override
     public void run(){
-        System.out.println("----------所有线程已完成，开始整合数据段文件----------");
+        System.out.println("----------所有线程已完成，开始整合数据文件----------");
         try {
             FileOutputStream output = new FileOutputStream(this.filePath);
             FileInputStream ins;

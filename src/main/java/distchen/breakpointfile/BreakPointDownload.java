@@ -19,7 +19,11 @@ public class BreakPointDownload {
     private String fileName;
     private String filePath;
     private TempFile file;
-    public static long MAXBLOCK = 10*1024*1024; // 10M
+
+    /**
+     * 单个断点文件的大小，如果被下载的文件比此值大，则会启用多个线程同时下载不同的数据段
+     */
+    public static long MAXBLOCK = 10*1024*1024;
 
     public BreakPointDownload(String url, String output){
         this.url = url;
@@ -28,7 +32,7 @@ public class BreakPointDownload {
         this.filePath = this.output+File.separator+this.fileName;
     }
 
-    public void startDownload(){
+    public void download(){
         File file = new File(this.filePath+".tmp.info");
         if (!file.exists()){
             long size = this.getFileSize();
@@ -57,6 +61,9 @@ public class BreakPointDownload {
         }
     }
 
+    /**
+     * 序列化此文件的分段信息到本地，便于下次根据已有的文件继续下载，不用全部重新请求
+     */
     private void generateTempFile(){
         try {
             ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(this.filePath+".tmp.info"));

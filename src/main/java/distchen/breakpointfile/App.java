@@ -9,7 +9,7 @@ package distchen.breakpointfile;
 public class App {
 
     public static void main(String [] args){
-        String source = "http://117.78.35.239/demo.doc";
-        new BreakPointDownload(source,"D:/BreakPointFile").startDownload();
+        String source = "http://*****/demo.doc";
+        new BreakPointDownload(source,"D:/BreakPointFile").download();
     }
 }
