@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Breakpointfile by DistChen</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Breakpointfile</h1>
+        <h2>文件多线程断点续传、下载</h2>
+        <a href="https://github.com/DistChen/BreakPointFile" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="breakpointfile" class="anchor" href="#breakpointfile" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>BreakPointFile</h1>
+
+<p>此 Demo 简单演示了如何利用多线程来对文件进行断点续传、下载。目前很多下载工具都支持文件的持续下载：即使上一次下载未完成，下次下载的时候还会继续上次的下载，已经下载过的数据就不会重复下载了，可以避免重复下载。这在与文档有关的应用中特别重要，在磁盘稀缺的移动应用中也非常重要，不仅可以省流量，还能减少磁盘的开销。</p>
+
+<h3>
+<a id="如何使用" class="anchor" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>如何使用</h3>
+
+<pre><code>    //参考 App.java 中文件
+    String source = "http://*****/demo.doc";
+    //第一个参数代表文件的url地址，第二个参数代表文件的保存路径
+    BreakPointDownload file = new BreakPointDownload(source,"D:/BreakPointFile");
+    file.download();
+</code></pre>
+
+<h3>
+<a id="如何使用多线程" class="anchor" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BA%BF%E7%A8%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>如何使用多线程</h3>
+
+<p>当下载一个大文件时，启用多线程下载显然是一个更好的选择。每个线程分别下载不同范围的数据，待全部线程下载完成时，再将下载的数据合并。在这个Demo 中，是否启用多线程会自动判断：文件的大小每超出 10M（在 BreakPointDownload.java 中控制），就会启用一个线程去下载对应范围的数据。</p>
+
+<pre><code>    比如当文件大小为40M时，会用4个线程下载：
+    第一个线程下载大小：10M，范围：0 - (10*1024*1024-1) 
+    第二个线程下载大小：10M，范围：10*1024*1024 - (20*1024*1024-1)
+    第三个线程下载大小：10M，范围：20*1024*1024 - (30*1024*1024-1)
+    第四个线程下载大小：10M，范围：30*1024*1024 - (40*1024*1024-1)
+</code></pre>
+
+<h1>
+<a id="示例" class="anchor" href="#%E7%A4%BA%E4%BE%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>示例</h1>
+
+<h3>
+<a id="第一次下载的时候如果没有找到相应的数据文件会生成对应的数据文件" class="anchor" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%B8%8B%E8%BD%BD%E7%9A%84%E6%97%B6%E5%80%99%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E6%89%BE%E5%88%B0%E7%9B%B8%E5%BA%94%E7%9A%84%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6%E4%BC%9A%E7%94%9F%E6%88%90%E5%AF%B9%E5%BA%94%E7%9A%84%E6%95%B0%E6%8D%AE%E6%96%87%E4%BB%B6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>第一次下载的时候，如果没有找到相应的数据文件，会生成对应的数据文件</h3>
+
+<p><img src="https://github.com/DistChen/BreakPointFile/blob/master/images/1.png?raw=true" alt="" title="第一次下载的时候"></p>
+
+<h3>
+<a id="下载过程中生成的临时文件" class="anchor" href="#%E4%B8%8B%E8%BD%BD%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%94%9F%E6%88%90%E7%9A%84%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>下载过程中生成的临时文件</h3>
+
+<p><img src="https://github.com/DistChen/BreakPointFile/blob/master/images/2.png?raw=true" alt="" title="下载时生成的一些临时文件"></p>
+
+<h3>
+<a id="如果上次下载未成功再次下载时从上次下载的位置继续下载不会重复下载已经下载过的数据" class="anchor" href="#%E5%A6%82%E6%9E%9C%E4%B8%8A%E6%AC%A1%E4%B8%8B%E8%BD%BD%E6%9C%AA%E6%88%90%E5%8A%9F%E5%86%8D%E6%AC%A1%E4%B8%8B%E8%BD%BD%E6%97%B6%E4%BB%8E%E4%B8%8A%E6%AC%A1%E4%B8%8B%E8%BD%BD%E7%9A%84%E4%BD%8D%E7%BD%AE%E7%BB%A7%E7%BB%AD%E4%B8%8B%E8%BD%BD%E4%B8%8D%E4%BC%9A%E9%87%8D%E5%A4%8D%E4%B8%8B%E8%BD%BD%E5%B7%B2%E7%BB%8F%E4%B8%8B%E8%BD%BD%E8%BF%87%E7%9A%84%E6%95%B0%E6%8D%AE" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>如果上次下载未成功，再次下载时，从上次下载的位置继续下载，不会重复下载已经下载过的数据</h3>
+
+<p><img src="https://github.com/DistChen/BreakPointFile/blob/master/images/3.png?raw=true" alt="" title="如果上传下载未成功，再次下载时，从上次下载的位置继续下载，不会重复下载已经下载过的数据"></p>
+
+<h3>
+<a id="下载成功后临时文件会自动删除" class="anchor" href="#%E4%B8%8B%E8%BD%BD%E6%88%90%E5%8A%9F%E5%90%8E%E4%B8%B4%E6%97%B6%E6%96%87%E4%BB%B6%E4%BC%9A%E8%87%AA%E5%8A%A8%E5%88%A0%E9%99%A4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>下载成功后，临时文件会自动删除</h3>
+
+<p><img src="https://github.com/DistChen/BreakPointFile/blob/master/images/4.png?raw=true" alt="" title="下载成功后，临时文件会自动删除"></p>
+
+<h1>
+<a id="结束关键点" class="anchor" href="#%E7%BB%93%E6%9D%9F%E5%85%B3%E9%94%AE%E7%82%B9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>结束：关键点</h1>
+
+<pre><code>1、利用 http 中的 range 头，控制请求指定范围内的数据；
+2、我这里用的 CyclicBarrier 来控制多线程的同步；
+3、断点续传的原理也是类似的，只不过换作服务端来记录下载的信息。
+</code></pre>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/DistChen/BreakPointFile/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/DistChen/BreakPointFile/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/DistChen/BreakPointFile"></a> is maintained by <a href="https://github.com/DistChen">DistChen</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
