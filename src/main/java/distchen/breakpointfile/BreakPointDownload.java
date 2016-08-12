@@ -72,6 +72,7 @@ public class BreakPointDownload {
         try {
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(this.filePath+".tmp.info"));
             this.file = (TempFile ) input.readObject();
+            input.close();
         } catch (IOException e) {
             System.err.println("未找到临时文件");
         }catch (ClassNotFoundException e) {
