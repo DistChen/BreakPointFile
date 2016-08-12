@@ -36,11 +36,14 @@ public class TempFileTask extends Thread{
                 while((len=ins.read(buffer))>0){
                     output.write(buffer, 0, len);
                 }
+                ins.close();
+                new File(filePartName).delete();
             }
             output.flush();
             output.close();
             System.out.println("-----------------文件下载完毕-----------------");
             System.out.println("文件下载地址:"+this.filePath);
+            new File(this.filePath+".tmp.info").delete();
         }catch (Exception e){
             e.printStackTrace();
         }
