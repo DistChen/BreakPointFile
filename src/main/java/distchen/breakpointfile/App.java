@@ -10,6 +10,9 @@ public class App {
 
     public static void main(String [] args){
         String source = "http://*****/demo.doc";
+        /**
+         *
+         */
         new BreakPointDownload(source,"D:/BreakPointFile").download();
     }
 }
